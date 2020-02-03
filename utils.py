@@ -5,7 +5,7 @@ import csv
 import time
 import pickle
 import logging
-
+import cv2
 import torch
 from torchvision import datasets, transforms
 import torchvision.utils
@@ -124,11 +124,13 @@ def get_data_loaders(hidden_config: HiDDenConfiguration, train_options: Training
     transform it into tensor, and normalize it."""
     data_transforms = {
         'train': transforms.Compose([
+            transforms.Grayscale(num_output_channels=3),
             transforms.RandomCrop((hidden_config.H, hidden_config.W), pad_if_needed=True),
             transforms.ToTensor(),
             transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
         ]),
         'test': transforms.Compose([
+            transforms.Grayscale(num_output_channels=3),
             transforms.CenterCrop((hidden_config.H, hidden_config.W)),
             transforms.ToTensor(),
             transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
